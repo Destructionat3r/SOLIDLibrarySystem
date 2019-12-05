@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace library_system
+namespace SOLIDLibrarySystem
 {
     class Program
     {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace library_system
+namespace SOLIDLibrarySystem
 {
     interface IUserInterfaceElement
     {

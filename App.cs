@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Xml.Serialization;
 
-namespace library_system
+namespace SOLIDLibrarySystem
 {
     class App
     {
@@ -109,7 +109,7 @@ namespace library_system
                     } while (!validID);
 
                     string selectedCategory = libraryHelper.Categories[selectedCategoryID];
-                    Console.WriteLine("You have sected {0}", selectedCategory);
+                    Console.WriteLine("You have selected {0}", selectedCategory);
 
                     string title = Input("Title");
                     string author = Input("Author");

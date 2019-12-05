@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace library_system
+namespace SOLIDLibrarySystem
 {
     public class Magazine : IUserInterfaceElement
     {

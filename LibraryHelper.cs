@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace library_system
+namespace SOLIDLibrarySystem
 {
     public class LibraryHelper
     {
