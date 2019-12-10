@@ -13,7 +13,8 @@ namespace SOLIDLibrarySystem
     {
         private string filetype = "JSON";
         private LibraryHelper libraryHelper = new LibraryHelper();
-        private List<Book> books;
+        private List<Book> books = new List<Book>();
+        private List<Author> authorList = new List<Author>();
 
         public App()
         {
@@ -22,6 +23,8 @@ namespace SOLIDLibrarySystem
 
         public void Run()
         {
+            libraryHelper.SetNonFictionCategories();
+            libraryHelper.SetFictionCategories();
             CurrentTime time = new CurrentTime();
             while (true)
             {
@@ -78,11 +81,47 @@ namespace SOLIDLibrarySystem
 
                 while (!done)
                 {
+                    int typeOfBook;
+                    string typeChoice = "";
+                    int categoryCounter = 0;
+                    int displayCategory = 0;
+                    string type = "";
+                    string selectedCategory = "";
+
                     Console.Clear();
-                    Console.WriteLine("Select a category:");
-                    for (int i = 0; i < libraryHelper.Categories.Count; i++)
+                    Console.WriteLine("Do you want to enter a fiction or non fiction book?");
+                    Console.WriteLine("0: Non-fiction");
+                    Console.WriteLine("1: Fiction");
+                    while(!int.TryParse(Console.ReadLine(), out typeOfBook))
                     {
-                        Console.WriteLine(i + ": " + libraryHelper.Categories[i]);
+                        Console.WriteLine("Option not available. Please try again");
+                    }
+
+                    switch(typeOfBook)
+                    {
+                        case 0:
+                            type = "NonFiction";
+                            categoryCounter = libraryHelper.NonFictionCategories.Count;
+                            break;
+                        case 1:
+                            type = "Fiction";
+                            categoryCounter = libraryHelper.FictionCategories.Count;
+                            break;
+                    }
+                    Console.Clear();
+
+                    Console.WriteLine("Select a category:");
+                    for (displayCategory = 0; displayCategory < categoryCounter; displayCategory++)
+                    {
+                        if (typeOfBook == 0)
+                        {
+                            typeChoice = libraryHelper.NonFictionCategories[displayCategory];
+                        }
+                        if (typeOfBook == 1)
+                        {
+                            typeChoice = libraryHelper.FictionCategories[displayCategory];
+                        }
+                        Console.WriteLine(displayCategory + ": " + typeChoice);
                     }
 
                     int selectedCategoryID = 0;
@@ -92,7 +131,7 @@ namespace SOLIDLibrarySystem
                         try
                         {
                             selectedCategoryID = Convert.ToInt32(Console.ReadLine());
-                            if (selectedCategoryID >= 0 && selectedCategoryID < libraryHelper.Categories.Count)
+                            if (selectedCategoryID >= 0 && selectedCategoryID < categoryCounter)
                             {
                                 validID = true;
                             }
@@ -108,15 +147,44 @@ namespace SOLIDLibrarySystem
                         }
                     } while (!validID);
 
-                    string selectedCategory = libraryHelper.Categories[selectedCategoryID];
+                    if (typeOfBook == 0)
+                    {
+                        selectedCategory = libraryHelper.NonFictionCategories[selectedCategoryID];
+                    }
+                    if (typeOfBook == 1)
+                    {
+                        selectedCategory = libraryHelper.FictionCategories[selectedCategoryID];
+                    }
                     Console.WriteLine("You have selected {0}", selectedCategory);
 
                     string title = Input("Title");
-                    string author = Input("Author");
+                    int noOfAuthors = 0;
+                    Console.Write("Number of authors: ");
+                    while(!int.TryParse(Console.ReadLine(), out noOfAuthors))
+                    {
+                        Console.WriteLine("Please enter a number");
+                    }
+                    for (int i = 0; i < noOfAuthors; i++)
+                    {
+                        string authors = Input("Author");
+                        authorList.Add(new Author(authors));
+                    }
                     string publisher = Input("Publisher");
                     string dateOfPublication = Input("Date of publication");
 
-                    books.Add(new Book(title, author, publisher, dateOfPublication, selectedCategory));
+                    string author = string.Join(", ", authorList.Select( o => o.Name).ToArray<string>());
+                    Console.WriteLine(author);
+
+                    if (typeOfBook == 0)
+                    {
+                        NonFictionBook nonFictionBook = new NonFictionBook(BookType.NonFiction, title, author, publisher, dateOfPublication, selectedCategory);
+                        books.Add(nonFictionBook);
+                    }
+                    if (typeOfBook == 1)
+                    {
+                        FictionBook fictionBook = new FictionBook(BookType.Fiction, title, author, publisher, dateOfPublication, selectedCategory);
+                        books.Add(fictionBook);
+                    }
 
                     another = Input("Add another? y/n");
                     if (another == "n")
@@ -127,13 +195,44 @@ namespace SOLIDLibrarySystem
                 };
 
                 Console.Clear();
-                Console.WriteLine("All books in library\n");
-                foreach (var book in books)
-                {
+                Console.WriteLine("All books in library\n");            
+                //bool firstPass = true;
+                
+                foreach (Book book in books)
+                {                    
                     book.Display();
                 }
+                
+                /*
+                Book book = new Book();
 
+                for(int i = 0; i < books.Count; i++)
+                {
+                    if ((int)books[i].bookType == 0)
+                    {
+                        if (firstPass == true)
+                        {
+                            Console.WriteLine("Non-Fiction Books");
+                            firstPass = false;
+                        }
+                        book.Display();
+                    }
+                }
 
+                for(int i = 0; i < books.Count; i++)
+                {
+                    if ((int)books[i].bookType == 1)
+                    {
+                        if (firstPass == true)
+                        {
+                            Console.WriteLine("Fiction Books");
+                            firstPass = false;
+                        }
+                        book.Display();
+                    }
+                }
+                */
+                
                 if (filetype == "JSON")
                 {
                     using (StreamWriter file = File.CreateText(@"library.json"))

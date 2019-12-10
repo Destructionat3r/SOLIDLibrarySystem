@@ -6,8 +6,34 @@ using System.Threading.Tasks;
 
 namespace SOLIDLibrarySystem
 {
-    public class LibraryHelper
+    public class LibraryHelper : INonFictionCategories, IFictionCategories
     {
-        public List<String> Categories = new List<string> { "Programming", "Systems Analysis", "E - Commerce", "Interaction Design", "Web Design" };
+        protected List<string> nonFictionCategories = new List<string>();
+        protected List<string> fictionCategories = new List<string>();
+        public List<String> NonFictionCategories 
+        { 
+            get {return nonFictionCategories;} 
+            set {nonFictionCategories = value;} 
+        }
+        public List<String> FictionCategories 
+        { 
+            get {return fictionCategories;} 
+            set {fictionCategories = value;} 
+        }
+
+        public void SetNonFictionCategories()
+        {
+            NonFictionCategories.Add("Programming");
+            NonFictionCategories.Add("Systems Analysis");
+            NonFictionCategories.Add("E - Commerce");
+            NonFictionCategories.Add("Interaction Design");
+            NonFictionCategories.Add("Web Design");
+        }
+        public void SetFictionCategories()
+        {
+            FictionCategories.Add("Horror");
+            FictionCategories.Add("Romance");
+            FictionCategories.Add("Fantasy");
+        }
     }
 }
