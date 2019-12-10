@@ -27,19 +27,22 @@ namespace SOLIDLibrarySystem
             CurrentTime time = new CurrentTime();
             while (true)
             {
-                Console.Clear();
                 //time.Update();
                 //time.Display();
                 int filetype;
 
-                Console.WriteLine("Would you like to import a file?");
-                Console.WriteLine("0: JSON");
-                Console.WriteLine("1: XML");
-                Console.WriteLine("2: No import");
-                while(!int.TryParse(Console.ReadLine(), out filetype))
+                do
                 {
-                    Console.WriteLine("Option not available. Please try again");
-                }
+                    Console.Clear();
+                    Console.WriteLine("Would you like to import a file?");
+                    Console.WriteLine("0: JSON");
+                    Console.WriteLine("1: XML");
+                    Console.WriteLine("2: No import");
+                    while(!int.TryParse(Console.ReadLine(), out filetype))
+                    {
+                        Console.WriteLine("Option not available. Please try again");
+                    }
+                } while(filetype != 0 && filetype != 1 && filetype != 2);
                 Console.Clear();
                 switch (filetype)
                 {
@@ -105,14 +108,17 @@ namespace SOLIDLibrarySystem
                     int displayCategory = 0;
                     string selectedCategory = "";
 
-                    Console.Clear();
-                    Console.WriteLine("Do you want to enter a fiction or non fiction book?");
-                    Console.WriteLine("0: Non-fiction");
-                    Console.WriteLine("1: Fiction");
-                    while(!int.TryParse(Console.ReadLine(), out typeOfBook))
+                    do
                     {
-                        Console.WriteLine("Option not available. Please try again");
-                    }
+                        Console.Clear();
+                        Console.WriteLine("Do you want to enter a fiction or non fiction book?");
+                        Console.WriteLine("0: Non-fiction");
+                        Console.WriteLine("1: Fiction");
+                        while(!int.TryParse(Console.ReadLine(), out typeOfBook))
+                        {
+                            Console.WriteLine("Option not available. Please try again");
+                        }
+                    }while(typeOfBook != 0 && typeOfBook != 1);
 
                     switch(typeOfBook)
                     {
