@@ -11,9 +11,8 @@ namespace SOLIDLibrarySystem
 {
     class App
     {
-        private string filetype = "JSON";
         private LibraryHelper libraryHelper = new LibraryHelper();
-        private List<Book> books = new List<Book>();
+        public List<Book> books = new List<Book>();
         private List<Author> authorList = new List<Author>();
 
         public App()
@@ -29,12 +28,22 @@ namespace SOLIDLibrarySystem
             while (true)
             {
                 Console.Clear();
-                time.Update();
-                time.Display();
+                //time.Update();
+                //time.Display();
+                int filetype;
 
+                Console.WriteLine("Would you like to import a file?");
+                Console.WriteLine("0: JSON");
+                Console.WriteLine("1: XML");
+                Console.WriteLine("2: No import");
+                while(!int.TryParse(Console.ReadLine(), out filetype))
+                {
+                    Console.WriteLine("Option not available. Please try again");
+                }
+                Console.Clear();
                 switch (filetype)
                 {
-                    case "JSON":
+                    case 0:
                         if (File.Exists(@"library.json"))
                         {
                             string exisitingData;
@@ -49,7 +58,7 @@ namespace SOLIDLibrarySystem
                             books = new List<Book>();
                         }
                         break;
-                    case "XML":
+                    case 1:
                         if (File.Exists(@"library.xml"))
                         {
                             var serializer = new XmlSerializer(typeof(List<Book>));
@@ -70,11 +79,20 @@ namespace SOLIDLibrarySystem
                             books = new List<Book>();
                         }
                         break;
+                    case 2:
+                        books = new List<Book>();
+                        break;
                 }
                 bool done = false;
+                string another = "";
+                do
+                {
+                    another = Input("Add a book y/n");
+                    another = another.ToUpper();
+                    
+                } while(another != "Y" && another != "N");
 
-                string another = Input("Add a book y/n");
-                if (another == "n")
+                if (another == "N")
                 {
                     done = true;
                 }
@@ -85,7 +103,6 @@ namespace SOLIDLibrarySystem
                     string typeChoice = "";
                     int categoryCounter = 0;
                     int displayCategory = 0;
-                    string type = "";
                     string selectedCategory = "";
 
                     Console.Clear();
@@ -100,11 +117,9 @@ namespace SOLIDLibrarySystem
                     switch(typeOfBook)
                     {
                         case 0:
-                            type = "NonFiction";
                             categoryCounter = libraryHelper.NonFictionCategories.Count;
                             break;
                         case 1:
-                            type = "Fiction";
                             categoryCounter = libraryHelper.FictionCategories.Count;
                             break;
                     }
@@ -171,9 +186,7 @@ namespace SOLIDLibrarySystem
                     }
                     string publisher = Input("Publisher");
                     string dateOfPublication = Input("Date of publication");
-
                     string author = string.Join(", ", authorList.Select( o => o.Name).ToArray<string>());
-                    Console.WriteLine(author);
 
                     if (typeOfBook == 0)
                     {
@@ -196,19 +209,12 @@ namespace SOLIDLibrarySystem
 
                 Console.Clear();
                 Console.WriteLine("All books in library\n");            
-                //bool firstPass = true;
+                bool firstPass = true;
+                int counter = 0;
                 
                 foreach (Book book in books)
                 {                    
-                    book.Display();
-                }
-                
-                /*
-                Book book = new Book();
-
-                for(int i = 0; i < books.Count; i++)
-                {
-                    if ((int)books[i].bookType == 0)
+                    if ((int)books[counter].bookType == 0)
                     {
                         if (firstPass == true)
                         {
@@ -217,11 +223,16 @@ namespace SOLIDLibrarySystem
                         }
                         book.Display();
                     }
+                    counter++;
                 }
 
-                for(int i = 0; i < books.Count; i++)
-                {
-                    if ((int)books[i].bookType == 1)
+                firstPass = true;
+                counter = 0;
+                Console.WriteLine();
+
+                foreach (Book book in books)
+                {                    
+                    if ((int)books[counter].bookType == 1)
                     {
                         if (firstPass == true)
                         {
@@ -230,10 +241,10 @@ namespace SOLIDLibrarySystem
                         }
                         book.Display();
                     }
+                    counter++;
                 }
-                */
                 
-                if (filetype == "JSON")
+                if (filetype == 0)
                 {
                     using (StreamWriter file = File.CreateText(@"library.json"))
                     {
@@ -243,7 +254,7 @@ namespace SOLIDLibrarySystem
                     }
                 }
 
-                if (filetype == "XML")
+                if (filetype == 1)
                 {
                     var serializer = new XmlSerializer(typeof(List<Book>));
                     using (var writer = new StreamWriter(@"library.xml"))
