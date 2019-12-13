@@ -33,6 +33,7 @@ namespace SOLIDLibrarySystem
 
                 do
                 {
+                    //Ask the user if they want to import a JSON, XML file or neither
                     Console.Clear();
                     Console.WriteLine("Would you like to import a file?");
                     Console.WriteLine("0: JSON");
@@ -110,6 +111,7 @@ namespace SOLIDLibrarySystem
 
                     do
                     {
+                        //Allow the user to enter non-fiction books into the system
                         Console.Clear();
                         Console.WriteLine("Do you want to enter a fiction or non fiction book?");
                         Console.WriteLine("0: Non-fiction");
@@ -187,11 +189,13 @@ namespace SOLIDLibrarySystem
                     }
                     for (int i = 0; i < noOfAuthors; i++)
                     {
+                        //Allow for multiple authors to be entered
                         string authors = Input("Author");
                         authorList.Add(new Author(authors));
                     }
                     string publisher = Input("Publisher");
                     string dateOfPublication = Input("Date of publication");
+                    //Put all of the author list into a single string seperated by a comma
                     string author = string.Join(", ", authorList.Select( o => o.Name).ToArray<string>());
 
                     if (typeOfBook == 0)
@@ -218,6 +222,7 @@ namespace SOLIDLibrarySystem
                 bool firstPass = true;
                 int counter = 0;
                 
+                //Print all the non-fiction and then the fiction books
                 foreach (Book book in books)
                 {                    
                     if ((int)books[counter].bookType == 0)

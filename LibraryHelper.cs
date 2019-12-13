@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace SOLIDLibrarySystem
 {
+    //Class to deal with all the categories for both fiction and non-fiction books
     public class LibraryHelper : INonFictionCategories, IFictionCategories
     {
         protected List<string> nonFictionCategories = new List<string>();
