@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SOLIDLibrarySystem
+﻿namespace SOLIDLibrarySystem
 {
     class Program
     {
